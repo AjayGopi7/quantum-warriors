@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Warriors - FTC #24128</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a:hover {
+            color: #0066cc;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #0066cc;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .page {
+            display: none;
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            animation: fadeIn 0.5s;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home Page */
+        .hero {
+            background: white;
+            border-radius: 20px;
+            padding: 4rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #0066cc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .team-number {
+            font-size: 2rem;
+            color: #0066cc;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #0066cc, #0099ff);
+            padding: 2rem;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            transform: translateY(0);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:nth-child(2) {
+            background: linear-gradient(135deg, #00b4d8, #0096c7);
+        }
+
+        .stat-card:nth-child(3) {
+            background: linear-gradient(135deg, #48cae4, #00b4d8);
+        }
+
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Team Page */
+        .section-title {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #0066cc;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .member-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3);
+        }
+
+        .member-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0066cc, #0099ff);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            border: 5px solid #f0f0f0;
+        }
+
+        .member-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .member-role {
+            color: #0066cc;
+            font-weight: 600;
+        }
+
+        .coach-card {
+            background: linear-gradient(135deg, #00b4d8, #0096c7);
+            color: white;
+        }
+
+        .coach-card .member-photo {
+            background: white;
+            color: #00b4d8;
+        }
+
+        .coach-card .member-name {
+            color: white;
+        }
+
+        .coach-card .member-role {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Outreach Page */
+        .outreach-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .outreach-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            transition: all 0.3s;
+        }
+
+        .outreach-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.2);
+        }
+
+        .outreach-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #0066cc, #0099ff);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .outreach-card:nth-child(2) .outreach-image {
+            background: linear-gradient(135deg, #00b4d8, #48cae4);
+        }
+
+        .outreach-card:nth-child(3) .outreach-image {
+            background: linear-gradient(135deg, #0096c7, #0077b6);
+        }
+
+        .outreach-content h3 {
+            color: #0066cc;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .outreach-date {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .outreach-description {
+            color: #444;
+            line-height: 1.8;
+        }
+
+        .add-outreach-btn {
+            background: linear-gradient(135deg, #0066cc, #00b4d8);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 2rem;
+        }
+
+        .add-outreach-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.4);
+        }
+
+        /* Robot Page */
+        .robot-showcase {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .robot-viewer {
+            background: linear-gradient(135deg, #f0f9ff, #dbeafe);
+            height: 400px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .robot-placeholder {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #0066cc, #0099ff);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .robot-placeholder:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .robot-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .control-btn {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: #0099ff;
+            transform: scale(1.05);
+        }
+
+        .control-btn.active {
+            background: #0099ff;
+        }
+
+        .robot-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .spec-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #0066cc;
+        }
+
+        .spec-label {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 0.5rem;
+        }
+
+        .spec-value {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Sponsors Page */
+        .sponsor-tiers {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .sponsor-tier {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tier-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #0066cc;
+        }
+
+        .gold { color: #FFD700; }
+        .silver { color: #C0C0C0; }
+        .bronze { color: #CD7F32; }
+
+        .sponsor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .sponsor-slot {
+            background: #f8f9fa;
+            border: 2px dashed #0066cc;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-weight: bold;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .sponsor-slot:hover {
+            background: #e6f2ff;
+            border-color: #0099ff;
+        }
+
+        .donation-section {
+            background: linear-gradient(135deg, #0066cc, #0099ff);
+            color: white;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .donation-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .donation-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .donate-btn {
+            background: white;
+            color: #0066cc;
+            border: none;
+            padding: 1.5rem 3rem;
+            border-radius: 10px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .donate-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .donation-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .donation-amount {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .donation-amount:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+        }
+
+        /* FIRST Section Styles */
+        .first-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .first-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .first-header h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #0066cc, #00b4d8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .first-logo-placeholder {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #0066cc, #0099ff);
+            border-radius: 20px;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+
+        .first-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 2rem;
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .level-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .level-card:hover {
+            border-color: #0066cc;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.2);
+        }
+
+        .level-card.fll {
+            border-color: #00b4d8;
+        }
+
+        .level-card.ftc {
+            border-color: #0066cc;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        }
+
+        .level-card.frc {
+            border-color: #023e8a;
+        }
+
+        .level-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .level-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .level-age {
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .level-description {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .level-image-placeholder {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #90e0ef, #48cae4);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        /* Instagram Section */
+        .instagram-section {
+            background: linear-gradient(135deg, #0077b6, #00b4d8, #48cae4);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .instagram-section h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .instagram-handle {
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+            margin: 1.5rem 0;
+            letter-spacing: 1px;
+        }
+
+        .instagram-btn {
+            background: white;
+            color: #0077b6;
+            border: none;
+            padding: 1.5rem 3rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .instagram-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.4);
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+        }
+
+        /* About Section Specific */
+        .about-intro {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .about-intro h2 {
+            font-size: 2.5rem;
+            color: #0066cc;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .about-intro p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 1.5rem;
+        }         
+        /* Picture Scroll Deck */
+.picture-carousel {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    border-radius: 15px;
+    margin-top: 2rem;
+    overflow: hidden;
+}
+
+.carousel-image {
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: #0066cc;
+    font-size: 3rem;
+    font-weight: bold;
+    animation: fadeIn 0.5s;
+}
+
+.carousel-image.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    color: #0066cc;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-arrow:hover {
+    background: white;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
+}
+
+.carousel-arrow.left {
+    left: 20px;
+}
+
+.carousel-arrow.right {
+    right: 20px;
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.dot.active {
+    background: white;
+    width: 30px;
+    border-radius: 6px;
+}
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .outreach-card {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+    <img src="team-logo.png" alt="Quantum Warriors Logo" style="height: 40px; width: auto; margin-right: 10px; vertical-align: middle;">
+    Quantum Warriors
+</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('about')">About Us</a></li>
+                <li><a href="#" onclick="showPage('outreach')">Outreach</a></li>
+                <li><a href="#" onclick="showPage('robot')">Our Robot</a></li>
+                <li><a href="#" onclick="showPage('sponsors')">Sponsors</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <div class="hero">
+            <h1>Quantum Warriors</h1>
+            <div class="team-number">FTC #24128</div>
+            <p>We are a passionate FIRST Tech Challenge robotics team dedicated to innovation, teamwork, and making a positive impact in our community. Through engineering excellence and collaborative spirit, we're building the future one robot at a time.</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">5+</div>
+                    <div class="stat-label">Years Competing</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Team Members</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">Outreach Events</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Page -->
+    <div id="about" class="page">
+        <!-- About Our Team Introduction -->
+        <div class="about-intro">
+            <h2>About Quantum Warriors</h2>
+            <p>We are the Quantum Warriors, FTC Team #24128, a dedicated group of students passionate about robotics, engineering, and making a difference in our community. Through the FIRST Tech Challenge program, we've learned that success is about more than building robots—it's about building character, developing skills, and inspiring others.</p>
+            <p>Our team works together to design, build, program, and compete with robots while also engaging in outreach activities to promote STEM education. We believe in gracious professionalism, coopertition, and the power of innovation to change the world.</p>
+        
+        <!-- Picture Scroll Deck -->
+        <!-- Picture Carousel -->
+        <div class="picture-carousel">
+    <div class="carousel-image active">
+        <img src="secondSlide.jpeg" alt="Team Photo 1" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    <div class="carousel-image">
+        <img src="thirdSlide.jpeg" alt="Team Photo 2" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    <div class="carousel-image">
+        <img src="firstSlide.jpeg" alt="Team Photo 3" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    <div class="carousel-image">
+        <img src="fourthSlide.jpeg" alt="Team Photo 4" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    
+    <button class="carousel-arrow left" onclick="changeSlide(-1)">‹</button>
+    <button class="carousel-arrow right" onclick="changeSlide(1)">›</button>
+    
+    <div class="carousel-dots">
+        <span class="dot active" onclick="currentSlide(0)"></span>
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+    </div>
+</div>
+</div>
+        <!-- Instagram Section -->
+        <div class="instagram-section">
+            <h2>Follow Our Journey! 📸</h2>
+            <p style="color: white; font-size: 1.2rem; opacity: 0.95;">Stay updated with our latest builds, competitions, and team adventures</p>
+            <div class="instagram-handle">@ftc24128</div>
+            <button class="instagram-btn" onclick="window.open('https://instagram.com/ftc24128', '_blank')">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="height: 30px; width: 30px;">
+    Follow Us on Instagram
+</button>
+        </div>
+
+        <!-- Team Members Section -->
+        <div class="section-title">
+            <h2>Meet Our Team</h2>
+        </div>
+
+        <h3 style="color: white; text-align: center; margin-bottom: 1.5rem; font-size: 2rem;">Team Members</h3>
+        <div class="team-grid">
+            <div class="member-card">
+                <div class="member-photo">1</div>
+                <div class="member-name">Ajay Gopi</div>
+                <div class="member-role">Build Team Leader & Social Media Manager</div>
+            </div>
+            <div class="member-card">
+                <div class="member-photo">2</div>
+                <div class="member-name">Aviraj Chahal</div>
+                <div class="member-role">Builder & Sustainability Lead</div>
+            </div>
+            <div class="member-card">
+                <div class="member-photo">3</div>
+                <div class="member-name">Shivesh Karthik</div>
+                <div class="member-role">Outreach</div>
+            </div>
+            <div class="member-card">
+                <div class="member-photo">4</div>
+                <div class="member-name">Vibhava Bhat</div>
+                <div class="member-role">3D Design & Code Lead & Driver</div>
+            </div>
+            <div class="member-card">
+                <div class="member-photo">5</div>
+                <div class="member-name">Saatvik </div>
+                <div class="member-role">Co-code lead & Builder</div>
+            </div>
+            <div class="member-card">
+                <div class="member-photo">6</div>
+                <div class="member-name">Anirudh</div>
+                <div class="member-role">Builder & Lead Driver</div>
+            </div>
+            <div class="member-card">
+                <div class="member-photo">7</div>
+                <div class="member-name">Bodh Agrawal</div>
+                <div class="member-role">Builder & Power tools expert</div>
+            </div>
+            <div class="member-card">
+                <div class="member-photo">8</div>
+                <div class="member-name">Siri</div>
+                <div class="member-role">Co outreach lead</div>
+            </div>
+            <div class="member-card">
+                <div class="member-photo">9</div>
+                <div class="member-name">Shreya</div>
+                <div class="member-role">Co outreach lead</div>
+            </div>
+            <div class="member-card">
+                <div class="member-photo">10</div>
+                <div class="member-name">Jithin</div>
+                <div class="member-role">Sustainability & Portfolio lead</div>
+            </div>
+        </div>
+
+        <h3 style="color: white; text-align: center; margin: 3rem 0 1.5rem; font-size: 2rem;">Our Coaches</h3>
+        <div class="team-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+            <div class="member-card coach-card">
+                <div class="member-photo">C1</div>
+                <div class="member-name">RK Bhat</div>
+                <div class="member-role">Head Coach</div>
+            </div>
+            <div class="member-card coach-card">
+                <div class="member-photo">C2</div>
+                <div class="member-name">Lakshmi Gudavalli</div>
+                <div class="member-role">Assistant Coach</div>
+            </div>
+        </div>
+
+        <!-- What is FIRST Section -->
+        <div class="first-section" style="margin-top: 3rem;">
+            <div class="first-header">
+                <img src="first.png" alt="FIRST Logo" style="width: 200px; height: 200px; object-fit: contain; margin: 0 auto 2rem; display: block; border-radius: 20px;">
+                <h2>What is FIRST?</h2>
+            </div>
+            
+            <div class="first-description">
+                <p><strong>FIRST</strong> (For Inspiration and Recognition of Science and Technology) is a global robotics organization founded by Dean Kamen and Woodie Flowers in 1989. FIRST's mission is to inspire young people to be science and technology leaders by engaging them in exciting mentor-based programs that build science, engineering, and technology skills.</p>
+                <br>
+                <p>FIRST programs help students discover and develop their passion for STEM while learning valuable life skills including teamwork, problem-solving, communication, and gracious professionalism. With programs for students from kindergarten through high school, FIRST offers something for everyone!</p>
+            </div>
+
+            <h3 style="color: #0066cc; text-align: center; margin: 2rem 0 1.5rem; font-size: 2rem;">FIRST Program Levels</h3>
+            
+            <div class="levels-grid">
+                <div class="level-card fll">
+                    <div class="level-icon">🧩</div>
+                    <div class="level-title">FIRST LEGO League</div>
+                    <div class="level-age">Ages 4-16</div>
+                    <div class="level-description">
+                        Students work with LEGO robotics to solve real-world challenges. Divided into Discover (ages 4-6), Explore (ages 6-10), and Challenge (ages 9-16), FLL introduces young minds to robotics through hands-on, theme-based challenges.
+                    </div>
+                </div>
+
+                <div class="level-card ftc">
+                    <div class="level-icon">🤖</div>
+                    <div class="level-title">FIRST Tech Challenge</div>
+                    <div class="level-age">Grades 7-12</div>
+                    <div class="level-description">
+                        Students design, build, and program robots to compete in an alliance format against other teams. FTC combines the excitement of sport with STEM learning, using a reusable platform and Android-based programming. This is our level!
+                    </div>
+                </div>
+
+                <div class="level-card frc">
+                    <div class="level-icon">⚡</div>
+                    <div class="level-title">FIRST Robotics Competition</div>
+                    <div class="level-age">Grades 9-12</div>
+                    <div class="level-description">
+                        The ultimate Sport for the Mind! Teams of high school students work with professional mentors to build and program industrial-size robots to compete in a high-energy environment. FRC robots can weigh up to 125 pounds!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outreach Page -->
+    <div id="outreach" class="page">
+        <div class="section-title">
+            <h2>Community Outreach</h2>
+        </div>
+
+        <div class="outreach-grid">
+<div class="outreach-card">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 300px;">
+        <div class="outreach-image" style="height: 150px;">
+            <img src="fll1.jpeg" alt="STEM Workshop" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="outreach-image" style="height: 150px;">
+            <img src="fll2.jpeg" alt="STEM Workshop" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+    </div>
+    <div class="outreach-content">
+        <h3>Helped start 4 New FLL teams</h3>
+        <div class="outreach-date">25-26 FTC Season</div>
+        <div class="outreach-description">
+            Helped create new FLL teams through outreach activities at local schools and libraries. Two of the four FLL teams made it to STATES. Mentored teams throughout season and held weekly meetings.
+        </div>
+    </div>
+</div>
+
+            <div class="outreach-card">
+                <div class="outreach-image" style="height: 150px;">
+            <img src="McNairOutreach.jpeg" alt="STEM Workshop" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+                <div class="outreach-content">
+                    <h3>McNair Back to School Night</h3>
+                    <div class="outreach-date">25-26 FTC Season</div>
+                    <div class="outreach-description">
+                        Showcased our robot and FTC program to 10+ local families at McNair Back to School Night. Engaged with parents and students, sharing our passion for robotics and encouraging them to join or support our team.
+                    </div>
+                </div>
+            </div>
+
+            <div class="outreach-card">
+                <div class="outreach-image" style="height: 200px;">
+            <img src="5kOutreach.jpeg" alt="5k Run for Education" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+                <div class="outreach-content">
+                    <h3>5k Run for Education</h3>
+                    <div class="outreach-date">25-26 FTC Season</div>
+                    <div class="outreach-description">
+                        Participated in local 5k runs to raise funds for our team and promote STEM education. Engaged with the community, sharing our mission and encouraging support for our robotics program.
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="outreach-card">
+                <div class="outreach-image" style="height: 150px;">
+            <img src="libraryOutreach.jpeg" alt="Library Outreach" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+                <div class="outreach-content">
+                    <h3>Reston Regional Library</h3>
+                    <div class="outreach-date">25-26 FTC Season</div>
+                    <div class="outreach-description">
+                        Held robotics workshops at the Reston Regional Library, introducing local students to the basics of robotics and programming. Engaged with kids and parents, fostering interest in STEM and encouraging them to explore robotics further.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!-- Robot Page -->
+    <div id="robot" class="page">
+        <div class="section-title">
+            <h2>Our Robot</h2>
+        </div>
+
+        <div class="robot-showcase">
+            <div class="robot-viewer">
+                <img src="robot-front.png" alt="Robot Front View" id="robotDisplay" style="max-width: 90%; max-height: 90%; object-fit: contain;">
+            </div>
+
+            <div class="robot-controls">
+                <button class="control-btn active" onclick="rotateRobot('front')">Front View</button>
+                <button class="control-btn" onclick="rotateRobot('side')">Side View</button>
+                <button class="control-btn" onclick="rotateRobot('back')">Back View</button>
+            </div>
+
+            <h3 style="color: #0066cc; margin-bottom: 1.5rem; font-size: 2rem;">Robot Specifications</h3>
+            <div class="robot-specs">
+                <div class="spec-item">
+                    <div class="spec-label">Drive Train</div>
+                    <div class="spec-value">Mecanum Wheels</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Weight</div>
+                    <div class="spec-value">~22 lbs</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Dimensions</div>
+                    <div class="spec-value">17" x 15" x 16"</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Outtake</div>
+                    <div class="spec-value">Hooded flywheel shooter</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Programming</div>
+                    <div class="spec-value">Java (FTC SDK)</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Special Features</div>
+                    <div class="spec-value">Husky Lens and Deadwheels</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sponsors Page -->
+    <div id="sponsors" class="page">
+        <div class="section-title">
+            <h2>Our Sponsors</h2>
+        </div>
+
+        <div class="sponsor-tiers">
+            <div class="sponsor-tier">
+                <h3 class="tier-title gold">🥇 Gold Sponsors</h3>
+                <div class="sponsor-grid">
+                    <div class="sponsor-slot" style="border: none; background: transparent;">
+    <img src="RAY.jpg" alt="Sponsor Name" style="max-width: 100%; max-height: 250px; object-fit: contain;">
+</div>
+                    <div class="sponsor-slot">Sponsor Logo</div>
+                    <div class="sponsor-slot">Sponsor Logo</div>
+                </div>
+            </div>
+
+            <div class="sponsor-tier">
+                <h3 class="tier-title silver">🥈 Silver Sponsors</h3>
+                <div class="sponsor-grid">
+                    <div class="sponsor-slot" style="border: none; background: transparent;">
+    <img src="swartek.jpg" alt="Sponsor Name" style="max-width: 100%; max-height: 120px; object-fit: contain;">
+</div>
+                    <div class="sponsor-slot">Sponsor Logo</div>
+                    <div class="sponsor-slot">Sponsor Logo</div>
+                    <div class="sponsor-slot">Sponsor Logo</div>
+                </div>
+            </div>
+
+            <div class="sponsor-tier">
+                <h3 class="tier-title bronze">🥉 Bronze Sponsors</h3>
+                <div class="sponsor-grid">
+                    <div class="sponsor-slot" style="border: none; background: transparent;">
+    <img src="PolyMaker.png" alt="Sponsor Name" style="max-width: 100%; max-height: 120px; object-fit: contain;">
+</div>
+                    <div class="sponsor-slot">Sponsor Logo</div>
+                    <div class="sponsor-slot">Sponsor Logo</div>
+                    <div class="sponsor-slot">Sponsor Logo</div>
+                    <div class="sponsor-slot">Sponsor Logo</div>
+                    <div class="sponsor-slot">Sponsor Logo</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="donation-section">
+            <h2>Support Our Team! 💙</h2>
+            <p>Your generous donation helps us compete, learn, and grow. Every contribution makes a difference in our journey to inspire the next generation of engineers and innovators.</p>
+            
+            <div class="donation-options">
+                <div class="donation-amount">$25</div>
+                <div class="donation-amount">$50</div>
+                <div class="donation-amount">$100</div>
+                <div class="donation-amount">$250</div>
+                <div class="donation-amount">Custom</div>
+            </div>
+            
+            <button class="donate-btn" onclick="handleDonation()">Donate Now</button>
+        </div>
+    </div>
+
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update nav active state
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.style.color = '#333';
+            });
+            event.target.style.color = '#0066cc';
+        }
+
+        // Robot Interaction
+        let currentView = 'front';
+        function rotateRobot(view) {
+    currentView = view;
+    const robot = document.getElementById('robotDisplay');
+    const buttons = document.querySelectorAll('.control-btn');
+    
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    switch(view) {
+        case 'front':
+            robot.src = 'robot-front.png';
+            break;
+        case 'side':
+            robot.src = 'robot-right.jpeg';
+            break;
+        case 'back':
+            robot.src = 'robot-front.png';
+            break;
+    }
+}
+
+        // Donation Handler
+        function handleDonation() {
+            alert('Thank you for your interest in supporting Quantum Warriors FTC #24128!\n\nPlease contact us at: quantumwarriors@example.com\n\nYou can also connect your preferred payment processor (PayPal, Stripe, etc.) here.');
+        }
+
+        // Add click interaction to donation amounts
+        document.addEventListener('DOMContentLoaded', function() {
+            const amounts = document.querySelectorAll('.donation-amount');
+            amounts.forEach(amount => {
+                amount.addEventListener('click', function() {
+                    amounts.forEach(a => a.style.background = 'rgba(255, 255, 255, 0.2)');
+                    this.style.background = 'rgba(255, 255, 255, 0.3)';
+                    this.style.borderColor = 'white';
+                });
+            });
+        });
+
+        // Add hover effects to robot
+        document.getElementById('robotDisplay').addEventListener('click', function() {
+            this.style.animation = 'none';
+            setTimeout(() => {
+                this.style.animation = 'float 3s ease-in-out infinite';
+            }, 10);
+        });
+
+
+
+        // Picture Carousel
+        let currentSlideIndex = 0;
+        
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.carousel-image');
+            const dots = document.querySelectorAll('.dot');
+            
+            slides[currentSlideIndex].classList.remove('active');
+            dots[currentSlideIndex].classList.remove('active');
+            
+            currentSlideIndex += direction;
+            
+            if (currentSlideIndex >= slides.length) {
+                currentSlideIndex = 0;
+            }
+            if (currentSlideIndex < 0) {
+                currentSlideIndex = slides.length - 1;
+            }
+            
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
+        }
+        
+        function currentSlide(index) {
+            const slides = document.querySelectorAll('.carousel-image');
+            const dots = document.querySelectorAll('.dot');
+            
+            slides[currentSlideIndex].classList.remove('active');
+            dots[currentSlideIndex].classList.remove('active');
+            
+            currentSlideIndex = index;
+            
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
+        }
+    </script>
+</body>
+</html>
