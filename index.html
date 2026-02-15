@@ -812,28 +812,90 @@
 }
 
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                gap: 1rem;
-                font-size: 0.9rem;
-            }
+    /* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 0.5rem;
+}
 
-            .hero h1 {
-                font-size: 2.5rem;
-            }
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: #0066cc;
+    margin: 3px 0;
+    transition: all 0.3s;
+    border-radius: 3px;
+}
 
-            .outreach-card {
-                grid-template-columns: 1fr;
-            }
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
 
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-links.active {
+        max-height: 400px;
+    }
+
+    .nav-links li {
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 1.5rem 2rem;
+        width: 100%;
+    }
+
+    .nav-links a::after {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .outreach-card {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-container {
+        position: relative;
+    }
+}
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
@@ -1316,6 +1378,20 @@
             slides[currentSlideIndex].classList.add('active');
             dots[currentSlideIndex].classList.add('active');
         }
+                // Mobile Menu Toggle
+function toggleMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    const hamburger = document.querySelector('.hamburger');
+    navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active');
+}
+
+function closeMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    const hamburger = document.querySelector('.hamburger');
+    navLinks.classList.remove('active');
+    hamburger.classList.remove('active');
+}
     </script>
 </body>
 </html>
