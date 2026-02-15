@@ -896,6 +896,9 @@
         position: relative;
     }
 }
+        </style>
+</head>
+<body>
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
@@ -903,12 +906,17 @@
     <img src="team-logo.png" alt="Quantum Warriors Logo" style="height: 40px; width: auto; margin-right: 10px; vertical-align: middle;">
     Quantum Warriors
 </div>
+             <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
             <ul class="nav-links">
-                <li><a href="#" onclick="showPage('home')">Home</a></li>
-                <li><a href="#" onclick="showPage('about')">About Us</a></li>
-                <li><a href="#" onclick="showPage('outreach')">Outreach</a></li>
-                <li><a href="#" onclick="showPage('robot')">Our Robot</a></li>
-                <li><a href="#" onclick="showPage('sponsors')">Sponsors</a></li>
+                <li><a href="#" onclick="showPage('home'); closeMenu()">Home</a></li>
+                <li><a href="#" onclick="showPage('about'); closeMenu()">About Us</a></li>
+                <li><a href="#" onclick="showPage('outreach'); closeMenu()">Outreach</a></li>
+                <li><a href="#" onclick="showPage('robot'); closeMenu()">Our Robot</a></li>
+                <li><a href="#" onclick="showPage('sponsors'); closeMenu()">Sponsors</a></li>
             </ul>
         </div>
     </nav>
