@@ -17,6 +17,11 @@
             color: #333;
             min-height: 100vh;
         }
+        
+        html {
+    scroll-behavior: smooth;
+}
+
 
         /* Navigation */
         nav {
@@ -1350,6 +1355,22 @@
 
         // Picture Carousel
         let currentSlideIndex = 0;
+                let autoSlide = setInterval(() => {
+    changeSlide(1);
+}, 5000);
+
+const carousel = document.querySelector('.picture-carousel');
+
+carousel.addEventListener('mouseenter', () => {
+    clearInterval(autoSlide);
+});
+
+carousel.addEventListener('mouseleave', () => {
+    autoSlide = setInterval(() => {
+        changeSlide(1);
+    }, 5000);
+});
+
         
         function changeSlide(direction) {
             const slides = document.querySelectorAll('.carousel-image');
