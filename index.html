@@ -118,13 +118,31 @@
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            background: linear-gradient(135deg, #0066cc, #0099ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-        }
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    min-height: 4.5rem;
+}
+
+.hero h1 .static-text {
+    background: linear-gradient(135deg, #0066cc, #0099ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero h1 .typing-text {
+    background: linear-gradient(135deg, #0066cc, #0099ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    border-right: 3px solid #0066cc;
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0%, 49% { border-color: #0066cc; }
+    50%, 100% { border-color: transparent; }
+}
 
         .team-number {
             font-size: 2rem;
@@ -936,7 +954,7 @@
     <!-- Home Page -->
     <div id="home" class="page active">
         <div class="hero">
-            <h1>Quantum Warriors</h1>
+            <h1><span class="static-text">We are </span><span class="typing-text" id="typingText"></span></h1>
             <div class="team-number">FTC #24128</div>
             <p>We are a passionate FIRST Tech Challenge robotics team dedicated to innovation, teamwork, and making a positive impact in our community. Through engineering excellence and collaborative spirit, we're building the future one robot at a time.</p>
             
@@ -1343,6 +1361,66 @@
     </div>
 
     <script>
+        // Typing Animation
+const words = [
+    "the Quantum Warriors",
+    "Coders",
+    "Builders", 
+    "Designers",
+    "FIRST Ambassadors",
+    "the Quantum Warriors"
+];
+
+let wordIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let typingSpeed = 100;
+
+function typeEffect() {
+    const typingElement = document.getElementById('typingText');
+    const currentWord = words[wordIndex];
+    
+    if (!isDeleting && charIndex <= currentWord.length) {
+        // Typing
+        typingElement.textContent = currentWord.substring(0, charIndex);
+        charIndex++;
+        typingSpeed = 100;
+    } else if (isDeleting && charIndex >= 0) {
+        // Deleting
+        typingElement.textContent = currentWord.substring(0, charIndex);
+        charIndex--;
+        typingSpeed = 50;
+    }
+    
+    // Check if word is complete
+    if (!isDeleting && charIndex > currentWord.length) {
+        // Pause at end of word
+        typingSpeed = 2000;
+        isDeleting = true;
+    }
+    
+    // Check if word is fully deleted
+    if (isDeleting && charIndex < 0) {
+        isDeleting = false;
+        wordIndex++;
+        
+        // Loop back to first word after last word
+        if (wordIndex >= words.length) {
+            wordIndex = 0;
+        }
+        
+        typingSpeed = 500;
+    }
+    
+    setTimeout(typeEffect, typingSpeed);
+}
+
+// Start typing animation when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(typeEffect, 500);
+    
+    // ... rest of your DOMContentLoaded code stays here
+    const amounts = document.querySelectorAll('.donation-amount');
         // Page Navigation
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
