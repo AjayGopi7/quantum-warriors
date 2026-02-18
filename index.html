@@ -1360,15 +1360,14 @@
         </div>
     </div>
 
-    <script>
+   <script>
 // Typing Animation
 const words = [
     "the Quantum Warriors",
     "Coders",
     "Builders", 
     "Designers",
-    "FIRST Ambassadors",
-    "the Quantum Warriors"
+    "FIRST Ambassadors"
 ];
 
 let wordIndex = 0;
@@ -1378,6 +1377,8 @@ let typingSpeed = 100;
 
 function typeEffect() {
     const typingElement = document.getElementById('typingText');
+    if (!typingElement) return;
+    
     const currentWord = words[wordIndex];
     
     if (!isDeleting && charIndex <= currentWord.length) {
@@ -1421,12 +1422,6 @@ function showPage(pageId) {
         page.classList.remove('active');
     });
     document.getElementById(pageId).classList.add('active');
-    
-    // Update nav active state
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.style.color = '#333';
-    });
-    event.target.style.color = '#0066cc';
 }
 
 // Robot Interaction
@@ -1509,8 +1504,8 @@ function closeMenu() {
 }
 
 // Start everything when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // Start typing animation
+window.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, starting typing animation...');
     setTimeout(typeEffect, 500);
     
     // Add click interaction to donation amounts
